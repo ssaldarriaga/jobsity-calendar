@@ -1,11 +1,23 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { App } from './App';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { ThemeProvider } from 'styled-components';
+
+// Utils
+import { THEME } from '../../../domain/styles/theme';
+
+// Redux
+import { store } from '../../redux/store';
 
 const render = () => {
   ReactDOM.render(
     <React.StrictMode>
-      <App />
+      <Provider store={store}>
+        <ThemeProvider theme={THEME.dark}>
+          <App />
+        </ThemeProvider>
+      </Provider>
     </React.StrictMode>,
     document.getElementById('root'),
   );
