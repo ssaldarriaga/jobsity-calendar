@@ -1,5 +1,6 @@
 import babel from 'rollup-plugin-babel';
 import clear from 'rollup-plugin-clear';
+import postcss from 'rollup-plugin-postcss';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
@@ -18,6 +19,9 @@ const PLUGINS = [
     jsnext: true,
     browser: true,
     preferBuiltins: false,
+  }),
+  postcss({
+    plugins: [],
   }),
   commonjs({
     include: 'node_modules/**',

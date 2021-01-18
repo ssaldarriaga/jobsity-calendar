@@ -6,8 +6,8 @@ import { Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 // Components
-import { Day } from './components/Day';
 import { Month } from './components/Month';
+import { DayContainer } from './containers/Day';
 import { DayTitle } from './components/DayTitle';
 import { HeaderContainer } from '../../containers/Header';
 
@@ -21,7 +21,6 @@ import { ReducerType } from '../../../../redux/utils/redux';
 import * as monthActions from '../../../../redux/actions/monthActions';
 
 const Container = styled.section`
-  height: calc(100vh - 100px);
   padding: 1rem;
 `;
 
@@ -49,13 +48,7 @@ const MonthComponent: FC<IMonthComponent> = ({ loadMonthData, days }) => {
           <Month rows={dates.length / DAYS.length}>
             {titles}
             {dates.map((key) => (
-              <Day
-                key={key}
-                id={days[key].id}
-                title={days[key].title}
-                reminders={days[key].reminders}
-                isInCurrentMonth={days[key].isInCurrentMonth}
-              />
+              <DayContainer key={key} data={days[key]} />
             ))}
           </Month>
         </Container>

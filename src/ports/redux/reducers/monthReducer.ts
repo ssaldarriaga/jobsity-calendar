@@ -17,6 +17,7 @@ export const monthReducer = createReducer<Month, MonthHandler>(initialState, {
     return {
       ...state,
       ...action.payload,
+      days: { ...state.days, ...action.payload.days },
     };
   },
 });

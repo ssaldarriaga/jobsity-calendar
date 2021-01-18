@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { generateDay } from './day';
 import { DAYS_ON_WEEK } from '../domain/data/monthData';
 import { MonthDays } from '../domain/entities/monthEntities';
 
@@ -55,25 +56,18 @@ export const generateDays = (month: number, year: number, currentDays: MonthDays
   const resp = Array(amountOfDays)
     .fill(0)
     .reduce((previous: MonthDays) => {
-      const id = initialDate.format('y/M/D');
-      const isInCurrentMonth = initialDate.month() === month;
-      const title = isInCurrentMonth ? initialDate.format('D') : initialDate.format('MMM D');
-      const day = {
-        id,
-        title,
-        isInCurrentMonth,
-        dayOfWeek: initialDate.day(),
-        reminders: {},
-      };
+      const day = generateDay(initialDate);
+      day.isInCurrentMonth = initialDate.month() === month;
+      day.title = day.isInCurrentMonth ? day.title : initialDate.format('MMM D');
 
-      if (id in currentDays) {
+      if (day.id in currentDays) {
         initialDate.add(1, 'days');
-        previous[id] = { ...currentDays[id], title, isInCurrentMonth };
+        previous[day.id] = { ...currentDays[day.id], title: day.title, isInCurrentMonth: day.isInCurrentMonth };
         return previous;
       }
 
-      previous[id] = day;
-      currentDays[id] = day;
+      previous[day.id] = day;
+      currentDays[day.id] = day;
       initialDate.add(1, 'days');
 
       return previous;

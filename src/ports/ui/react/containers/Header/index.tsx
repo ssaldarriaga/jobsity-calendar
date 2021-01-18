@@ -18,16 +18,20 @@ const ArrowsContainer = styled.div`
 `;
 
 const StyledLink = styled(Link)`
+  align-items: center;
   color: ${({ theme }) => theme.secondaryText};
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
+  display: inline-flex;
+  font-weight: 600;
+  font-size: 1.2rem;
   height: 40px;
   min-width: 40px;
   padding: 0 1rem;
 
   &:hover {
+    color: ${({ theme }) => theme.secondaryText};
     opacity: 0.8;
+    text-decoratrion: none;
   }
 `;
 
@@ -46,7 +50,7 @@ export const HeaderContainer = () => {
   return (
     <Header>
       <Logo />
-      <PrimaryButton>Today</PrimaryButton>
+      <StyledLink to={`/month/${moment().year()}/${moment().month() + 1}/${moment().date()}`}>Today</StyledLink>
       <ArrowsContainer>
         <StyledLink to={`/month/${prevDate.year()}/${prevDate.month() + 1}/1`}>
           <i className="fa fa-arrow-left" aria-hidden="true"></i>

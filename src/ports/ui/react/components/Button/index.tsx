@@ -1,3 +1,4 @@
+import { ButtonHTMLAttributes } from 'react';
 import styled, { css } from 'styled-components';
 
 const buttonStyles = css`
@@ -20,32 +21,32 @@ const primaryButtonStyles = css`
   border: 1px solid ${({ theme }) => theme.primaryButton};
   color: ${({ theme }) => theme.primaryText};
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   height: 40px;
   padding: 0 1rem;
 `;
 
-const PrimaryButton = styled.button`
+const PrimaryButton = styled.button<ButtonHTMLAttributes<HTMLButtonElement>>`
   ${primaryButtonStyles}
   font-size: 1rem;
   height: 40px;
   padding: 0 1rem;
 `;
 
-const PrimarySmallButton = styled.button`
+const PrimarySmallButton = styled.button<ButtonHTMLAttributes<HTMLButtonElement>>`
   ${primaryButtonStyles}
   font-size: 0.875rem;
   height: 30px;
   padding: 0 0.5rem;
 `;
 
-const ClearButton = styled.button`
+const ClearButton = styled.button<{ color: string } & ButtonHTMLAttributes<HTMLButtonElement>>`
   ${buttonStyles}
   background: transparent;
   border: none;
-  color: ${({ theme }) => theme.secondaryText};
+  color: ${({ theme, color }) => color || theme.secondaryText};
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   height: 40px;
   min-width: 40px;
   padding: 0 1rem;

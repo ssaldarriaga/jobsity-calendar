@@ -5,7 +5,7 @@ const MonthContainer = styled.section<{ rows: number }>`
   border-left: 1px solid ${({ theme }) => theme.header};
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: 50px repeat(${({ rows }) => rows}, 1fr);
+  grid-template-rows: 50px repeat(${({ rows }) => rows}, 250px);
   height: 100%;
 `;
 
