@@ -38,6 +38,10 @@ const ReminderText = styled.span`
     margin: 0;
     display: flex;
     justify-content: space-between;
+
+    & > span {
+      flex: 1 1 0;
+    }
   }
 `;
 
@@ -63,7 +67,12 @@ export const ReminderButton: FC<IReminderButton> = ({ title, city, weather, colo
     <ReminderText>
       <div>{title}</div>
       <div>
-        <strong>City:</strong> {city} <strong>Weather:</strong> {weather}
+        <span className="text-truncate">
+          <strong>City:</strong> {city}
+        </span>
+        <span className="text-truncate">
+          <strong>Weather:</strong> {weather}
+        </span>
       </div>
     </ReminderText>
     <strong className="mr-1">Edit</strong>

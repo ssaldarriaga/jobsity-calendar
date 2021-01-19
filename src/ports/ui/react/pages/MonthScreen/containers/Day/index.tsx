@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { FC, useState, useMemo, MouseEvent } from 'react';
 
 // Components
@@ -12,20 +11,24 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from '../../../../componen
 import { RemainingLink } from '../../components/RemainingLink';
 import { Reminder } from '../../../../../../../domain/entities/reminderEntities';
 import { Day as DayData } from '../../../../../../../domain/entities/dayEntities';
-import { formatReminderMessage } from '../../../../../../../domain/services/reminderService';
 
 // Utils
+import { formatDayId } from '../../../../../../../adapters/day';
 import { THEME } from '../../../../../../../domain/styles/theme';
+import { formatReminderMessage, getNewReminderForDate } from '../../../../../../../domain/services/reminderService';
 
 interface IDayContainer {
   data: DayData;
 }
 
 export const DayContainer: FC<IDayContainer> = ({ data }) => {
-  const currentDay = useMemo(() => moment().format('y/M/D'), []);
+  const currentDay = useMemo(formatDayId, []);
   const [modalViewRemindersIsOpen, setModalViewRemindersIsOpen] = useState(false);
   const remindersKey = useMemo(() => {
-    const sortedReminders = Object.keys(data.reminders).sort();
+    const sortedReminders = Object.keys(data.reminders)
+      .map((key) => data.reminders[key])
+      .sort((first, second) => first.timestamp - second.timestamp)
+      .map(({ id }) => id);
     return { visible: sortedReminders.slice(0, 3), remaining: sortedReminders.slice(3), all: sortedReminders };
   }, [data.reminders]);
   const [modalReminder, setModalReminder] = useState<{ isOpen: boolean; values?: Reminder | undefined }>({
@@ -52,25 +55,38 @@ export const DayContainer: FC<IDayContainer> = ({ data }) => {
     setModalViewRemindersIsOpen((prev) => !prev);
   };
 
+  const handleCreateReminder = (ev?: MouseEvent) => {
+    if (ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
+
+    const reminder = getNewReminderForDate(data);
+    setModalReminder({
+      isOpen: true,
+      values: reminder,
+    });
+  };
+
   return (
     <>
       <Day
         title={data.title}
-        onClick={toggleModal}
+        onClick={handleCreateReminder}
         isCurrentDay={data.id === currentDay}
         isInCurrentMonth={data.isInCurrentMonth}
         isHolliday={[0, 6].includes(data.dayOfWeek)}
       >
         {remindersKey.visible.map((key: string) => {
-          const { color, weatherForest } = data.reminders[key];
-          const { title, city } = formatReminderMessage(data.reminders[key]);
+          const { color, weatherForest, city } = data.reminders[key];
+          const title = formatReminderMessage(data.reminders[key]);
 
           return (
             <ReminderButton
               key={key}
-              city={city}
               title={title}
               color={color}
+              city={city.city}
               weather={weatherForest}
               onClick={(ev) => toggleModal(ev, data.reminders[key])}
             />
@@ -102,15 +118,15 @@ export const DayContainer: FC<IDayContainer> = ({ data }) => {
         <ModalHeader toggle={toggleViewRemindersModal}>Reminders</ModalHeader>
         <ModalBody>
           {remindersKey.all.map((key: string) => {
-            const { color, weatherForest } = data.reminders[key];
-            const { title, city } = formatReminderMessage(data.reminders[key]);
+            const { color, weatherForest, city } = data.reminders[key];
+            const title = formatReminderMessage(data.reminders[key]);
 
             return (
               <ReminderButton
                 key={key}
-                city={city}
                 title={title}
                 color={color}
+                city={city.city}
                 weather={weatherForest}
                 onClick={(ev) => {
                   toggleModal(ev, data.reminders[key]);

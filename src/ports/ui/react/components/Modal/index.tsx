@@ -6,7 +6,12 @@ import {
   ModalFooter as RModalFooter,
 } from 'reactstrap';
 
-export const Modal = styled(RModal).attrs({ keyboard: false, backdrop: 'static' })`
+export const Modal = styled(RModal).attrs({
+  keyboard: false,
+  backdrop: 'static',
+  autoFocus: false,
+  returnFocusAfterClose: false,
+})`
   font-size: 1rem;
 `;
 

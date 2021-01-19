@@ -1,23 +1,23 @@
 import { FC } from 'react';
-import { FieldInputProps } from 'formik';
+import { FieldProps } from 'formik';
 import styled from 'styled-components';
 import { Input as RInput, FormGroup, InputProps } from 'reactstrap';
 
 // Components
 import { Label } from '../Label';
+import { ErrorMessage } from '../ErrorMessage';
 
 interface IInputFormGroup {
   label: string;
   id: string;
-  name: string;
-  field: FieldInputProps<string>;
+  list: string;
 }
 
 const Em = styled.em`
   font-size: 0.875rem;
 `;
 
-const LabelContainer = styled.div`
+export const LabelContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `;
@@ -27,7 +27,8 @@ export const Input = styled(RInput)`
   border: 1px solid ${({ theme }) => theme.header}af;
   color: ${({ theme }) => theme.header}af;
 
-  &:focus {
+  &:focus,
+  &[readonly] {
     background: ${({ theme }) => theme.secondaryText}a0;
   }
 
@@ -38,7 +39,14 @@ export const Input = styled(RInput)`
   }
 `;
 
-export const InputFormGroup: FC<IInputFormGroup & InputProps> = ({ label, id, name, field, ...rest }) => (
+export const InputFormGroup: FC<IInputFormGroup & InputProps & FieldProps> = ({
+  label,
+  id,
+  list,
+  field = { name: '' },
+  form: { errors = {} } = {},
+  ...rest
+}) => (
   <FormGroup>
     <LabelContainer>
       <Label for={id}>{label}</Label>
@@ -48,6 +56,7 @@ export const InputFormGroup: FC<IInputFormGroup & InputProps> = ({ label, id, na
         </Em>
       )}
     </LabelContainer>
-    <Input id={id} {...field} {...rest} />
+    <Input id={id} list={list} {...field} {...rest} />
+    {Boolean(errors[field?.name]) && <ErrorMessage>{errors[field?.name]}</ErrorMessage>}
   </FormGroup>
 );

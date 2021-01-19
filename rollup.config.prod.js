@@ -21,6 +21,7 @@ const rollupConfig = () => ({
   plugins: [
     replace({
       'process.env.NODE_ENV': JSON.stringify('production'),
+      WEATHER_API_KEY: JSON.stringify(process.env.WEATHER_API_KEY),
     }),
     ...PLUGINS,
     terser({

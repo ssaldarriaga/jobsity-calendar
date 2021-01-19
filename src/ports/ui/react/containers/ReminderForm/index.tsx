@@ -4,8 +4,12 @@ import { Formik, Form, Field } from 'formik';
 import { Row, Col, Alert } from 'reactstrap';
 
 // Components
+import { CityInput } from '../../components/CityInput';
 import { InputFormGroup } from '../../components/Input';
+import { ColorPicker } from '../../components/ColorPicker';
+import { DateTimePicker } from '../../components/DateTimePicker';
 import { Reminder } from '../../../../../domain/entities/reminderEntities';
+import { validateReminder } from '../../../../../domain/services/reminderService';
 
 // Utils
 import { REMINDER_MODEL_DATA } from '../../../../../domain/data/reminderData';
@@ -26,13 +30,13 @@ const ReminderForm: FC<IReminderFormContainer> = ({
   formId,
   afterSubmit = () => {},
 }) => {
-  const handleSubmit = (reminder: Reminder) => {
-    manageReminder(reminder);
+  const handleSubmit = async (reminder: Reminder) => {
+    await manageReminder(reminder);
     afterSubmit();
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+    <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validateReminder}>
       <Form id={formId}>
         <Row>
           <Col>
@@ -47,27 +51,31 @@ const ReminderForm: FC<IReminderFormContainer> = ({
           </Col>
         </Row>
         <Row>
-          <Col>
-            <Field label="Date (MM/DD/YYYY)" id="time.date" name="time.date" component={InputFormGroup} />
+          <Col md={8}>
+            <Field label="Date (MM/DD/YYYY HH:mm)" id="timestamp" name="timestamp" component={DateTimePicker} />
           </Col>
           <Col>
-            <Field label="Time (HH::MM)" id="time.time" name="time.time" component={InputFormGroup} />
-          </Col>
-          <Col>
-            <Field label="Color" id="color" name="color" component={InputFormGroup} />
+            <Field label="Color" id="color" name="color" component={ColorPicker} />
           </Col>
         </Row>
         <Row>
           <Col>
-            <Field label="City" id="city.city" name="city.city" component={InputFormGroup} />
+            <Field label="City" id="city" name="city" component={CityInput} />
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <Field readOnly id="weatherForest" name="weatherForest" label="Weather forest" component={InputFormGroup} />
-          </Col>
-        </Row>
-        <Alert color="danger">Hello</Alert>
+        {Boolean(initialValues.weatherForest) && (
+          <Row>
+            <Col>
+              <Field
+                readOnly
+                id="weatherForest"
+                name="weatherForest"
+                label="Weather forest"
+                component={InputFormGroup}
+              />
+            </Col>
+          </Row>
+        )}
       </Form>
     </Formik>
   );

@@ -6,6 +6,15 @@ It's an open-source application for managing the agenda.
 * Node JS == 12.20.1
 * npm
 
+## Configuration
+The calendar uses [WeatherAPI](https://www.weatherapi.com/) to check the weather of the reminders day, to allow make the request to the API you must to configure the following environment variable with the API key on your shell:
+
+
+```bash
+# .zshrc or .bashrc
+export WEATHER_API_KEY="<your-api-key>"
+```
+
 ## Scripts
 
 For starting the project in **development mode**, you can use the following scripts:
