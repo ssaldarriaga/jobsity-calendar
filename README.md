@@ -6,6 +6,13 @@ It's an open-source application for managing the agenda.
 * Node JS == 12.20.1
 * npm
 
+## Quick install
+You need to run the following command to clone and install the project dependies:
+
+```bash
+git clocne https://github.com/ssaldarriaga/jobsity-calendar.git && cd jobsity-calendar && npm install
+```
+
 ## Configuration
 The calendar uses [WeatherAPI](https://www.weatherapi.com/) to check the weather of the reminders day, to allow make the request to the API you must to configure the following environment variable with the API key on your shell:
 
@@ -34,6 +41,8 @@ The page will reload if you make edits.
 ### `npm run lint`
 Runs the linter to check the structure of the code.
 
+### `npm test`
+Launches the test runner in the interactive watch mode.
 
 ## Deploy app
 To build the project for production, you must run the following script:
